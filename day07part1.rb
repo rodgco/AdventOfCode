@@ -30,29 +30,3 @@ program_list.each_pair do |k,p|
 end
 
 puts root
-
-def calc_weight(pl, name)
-  unless pl[name].is_parent? then
-    w = pl[name].weight
-  else
-    w = pl[name].children.inject(pl[name].weight) {|s,p| s+calc_weight(pl, p)}
-  end
-  return w
-end
-
-def check_balance(pl, name)
-  unless pl[name].is_parent? then
-    w = pl[name].weight
-  else
-    w = pl[name].children.inject(pl[name].weight) {|s,p| s+calc_weight(pl, p)}
-    m1 = pl[name].children.map {|p| check_balance(pl, p)}
-    m2 = pl[name].children.map {|p| pl[p].weight }
-    if m1.uniq.length > 1 then
-      puts "#{name} is unbalanced. Children #{pl[name].children} ==>\n#{m1}\n#{m2}"
-    end
-  end
-  return w
-  # puts "#{'='*l} #{name} = #{w}"
-end
-
-puts check_balance program_list, root
